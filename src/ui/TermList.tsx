@@ -143,10 +143,10 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
       return <div>{array}</div>;
     }
 
-    function renderPerson(term: ITerm) {
-      if (!term.person) return t('person-any');
-      let list = term.person.list.join(', ');
-      return t(term.person.exclude ? 'person-exclude' : 'person-include', { list });
+    function renderContext(term: ITerm) {
+      if (!term.context) return t('context-any');
+      let list = term.context.list.join(', ');
+      return t(term.context.exclude ? 'context-exclude' : 'context-include', { list });
     }
 
     function renderLanguage(term: ITerm) {
@@ -239,14 +239,14 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
         ...isSorted('priority'),
       },
       {
-        key: 'person',
-        name: t('header-person'),
+        key: 'context',
+        name: t('header-context'),
         minWidth: 70,
         maxWidth: 70,
         isResizable: true,
         isCollapsible: true,
         onColumnClick,
-        onRender: renderPerson,
+        onRender: renderContext,
       },
       {
         key: 'translator',

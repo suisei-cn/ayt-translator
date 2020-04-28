@@ -3,7 +3,7 @@
     "header-output": "替换",
     "header-targetLang": "目标语言",
     "header-type": "操作类型",
-    "header-person": "发言者",
+    "header-context": "语境",
     "header-translator": "启用的翻译器",
     "header-priority": "优先级",
     "header-comment": "注释",
@@ -20,8 +20,8 @@
     "term-type-preprocess": "预处理",
     "term-type-transform": "变换",
     "term-type-postprocess": "后处理",
-    "person-any": "任意",
-    "person-include": "{{list}}",
-    "person-except": "除{{list}}",
+    "context-any": "任意",
+    "context-include": "{{list}}",
+    "context-except": "除{{list}}",
     "dummy": ""
 }

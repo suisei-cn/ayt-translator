@@ -3,7 +3,7 @@
     "header-output": "Replacement",
     "header-targetLang": "Target Language",
     "header-type": "Operation",
-    "header-person": "Speaker",
+    "header-context": "Context",
     "header-translator": "Enabled Translators",
     "header-priority": "Priority",
     "header-comment": "Comment",
@@ -20,8 +20,8 @@
     "term-type-preprocess": "Preprocess",
     "term-type-transform": "Transform",
     "term-type-postprocess": "Postprocess",
-    "person-any": "Any",
-    "person-include": "{{list}}",
-    "person-except": "Any except {{list}}",
+    "context-any": "Any",
+    "context-include": "{{list}}",
+    "context-except": "Any except {{list}}",
     "dummy": ""
 }

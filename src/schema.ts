@@ -17,7 +17,7 @@ export interface ITerm {
   targetLang?: string;
   translator?: FilterList;
   priority?: number;
-  person?: FilterList;
+  context?: FilterList;
   type?: 'preprocess' | 'transform' | 'postprocess';
   comment?: string;
 }
@@ -49,7 +49,7 @@ export function validate(json: any): asserts json is ITerm  {
         if (typeof json.targetLang !== 'string') throw new RangeError('Invalid Term: targetLang must be string'); break;
       case 'translator': validateFilterList(json.translator); break;
       case 'priority': if (!Number.isSafeInteger(json.priority)) throw new RangeError('Invalid Term: priority must be number'); break;
-      case 'person': validateFilterList(json.person); break;
+      case 'context': validateFilterList(json.context); break;
       case 'type': {
         switch (json.type) {
           case 'preprocess': case 'transform': case 'postprocess': break;
