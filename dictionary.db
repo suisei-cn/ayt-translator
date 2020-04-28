@@ -1,0 +1,27 @@
+{"input":"すいせいみゅーじっく","output":"彗星Music","targetLang":"zh","_id":"0XM4J41dUUHRUATm"}
+{"input":"超!A&G\\+","output":"Cho!A&G+","targetLang":"en","_id":"2mZ0mGxR7kFNVnRg"}
+{"input":"星詠み","output":"星咏者","targetLang":"zh","_id":"6c6jRPBzRdilS9GK"}
+{"input":"配信","output":"ライブストリーム","type":"preprocess","targetLang":"zh","comment":"防止被翻译成交付","_id":"6hrtHnozNAWKlznu"}
+{"input":"神楽めあ","output":"神乐Mea","targetLang":"zh","_id":"7F1kERD2iV0swuSL"}
+{"input":"赤井はあと","output":"赤井心","targetLang":"zh","_id":"7VInzU889ULCjebe"}
+{"input":"文化放送","output":"文化放送","targetLang":"zh","_id":"9nvJ4rQ3jvNn8uyc"}
+{"input":"犬山たまき","output":"犬山玉姬","targetLang":"zh","_id":"AaVEWlRC1ZMIMrBH"}
+{"input":"しぐれうい","output":"时雨羽衣","targetLang":"zh","_id":"E7epnUOHfcxgWBLW"}
+{"input":"ガ[シチ]ャ","output":"抽卡","targetLang":"zh","_id":"EnmUero3tcDduYUZ"}
+{"input":"文化放送","output":"JOQR","targetLang":"en","_id":"FtfZqhfszGj4qZlQ"}
+{"input":"あさひ","output":"朝日","targetLang":"zh","_id":"IaXc8jNMv5gB9ByP"}
+{"input":"シャニマス","output":"The Idolmaster: Shiny Colors","targetLang":"en","_id":"TFXdfk7a0LuSotuY"}
+{"input":"ほしまちすたじお","output":"星街Studio","targetLang":"zh","_id":"THKZX0g9PcsnTghN"}
+{"input":"ホロライブ","output":"Hololive","_id":"UHz657mD9EoeP9wR"}
+{"input":"すいせい","output":"彗星","targetLang":"zh","_id":"YgZEX8zEgwhppVKk"}
+{"input":"超!A&G\\+","output":"超!A&G+","targetLang":"zh","_id":"bOJeADZtnrAyJYwa"}
+{"input":"夏色まつり","output":"夏色祭","targetLang":"zh","_id":"bsMo7DebZfOaPtn3"}
+{"input":"ほしまちすたじお","output":"Hoshimachi Studio","targetLang":"en","_id":"gNE9AqXBNmbuz7PI"}
+{"input":"ロリ","output":"萝莉","targetLang":"zh","_id":"iFC7ZJ2f67Kq321Q"}
+{"input":"ガ[シチ]ャ","output":"Gacha","targetLang":"en","_id":"ivLbh6F6pwKpZXoo"}
+{"input":"(?<=[^ァ-ン])アレ(?![ァ-ン])","output":"あれ","translator":{"exclude":false,"list":["Google"]},"type":"preprocess","_id":"mUgivfHCaXNRaKWT"}
+{"input":"星街すいせい","output":"星街彗星","targetLang":"zh","_id":"n2cL4r1ummjrTamu"}
+{"input":"配信","output":"ストリーム","type":"preprocess","targetLang":"en","comment":"This prevents it to be translated to delivery","_id":"oTCR1bnox1lxtRoJ"}
+{"input":"ロリ","output":"Loli","targetLang":"en","_id":"rLMezzESl9EF0gmA"}
+{"input":"シャニマス","output":"偶像大师闪耀色彩","targetLang":"zh","_id":"v1LQeK4jWrfmRX8z"}
+{"input":"星街すいせい","output":"Hoshimachi Suisei","targetLang":"en","_id":"z43TQnCMK8zQCsZ5"}
