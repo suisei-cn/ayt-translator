@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Fabric } from '@fluentui/react/lib/Fabric';
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import {
@@ -7,12 +6,15 @@ import {
   DetailsListLayoutMode,
   SelectionMode,
   IColumn,
+  IDetailsHeaderProps,
 } from '@fluentui/react/lib/DetailsList';
+import { Stack } from '@fluentui/react/lib/Stack';
+import { ScrollablePane } from '@fluentui/react/lib/ScrollablePane';
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { useTranslation } from 'react-i18next';
 import { ITerm, comparePriority } from '../schema';
 import { useState, useMemo } from 'react';
-
+import { Sticky, StickyPositionType } from '@fluentui/react/lib/Sticky';
 
 const classNames = mergeStyleSets({
   icon: {
@@ -20,27 +22,7 @@ const classNames = mergeStyleSets({
     maxHeight: '16px',
     maxWidth: '16px',
   },
-  controlWrapper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
 });
-
-const dropdownStyles = {
-  dropdown: {
-    margin: '0 30px 1em 0',
-    width: '200px',
-  }
-}
-
-const controlStyles = {
-  root: {
-    margin: '0 30px 1em 1em',
-    minWidth: '200px',
-    maxWidth: '300px',
-  },
-};
-
 
 function compareString(a: string, b: string) {
   return a === b ? 0 : (a < b ? -1 : 1);
@@ -135,7 +117,7 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
       }
       let array = [];
       for (let item of ['Google', 'Microsoft']) {
-        if (item) {
+        if (allowed[item]) {
           array.push(<img key={item} src={item.toLowerCase() + '.png'} className={classNames.icon} alt={item} />);
         }
       }
@@ -356,13 +338,25 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
     }
   }
 
+  function onRenderDetailsHeader(props?: IDetailsHeaderProps, defaultRender?: (props?: IDetailsHeaderProps) => JSX.Element | null) {
+    if (!props) {
+      return null;
+    }
+    return (
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced={true}>
+        {defaultRender!(props)}
+      </Sticky>
+    );
+  };
+
   return (
-    <Fabric>
-      <div className={classNames.controlWrapper}>
+    <ScrollablePane styles={{stickyAbove: {background: 'white'}}}>
+      <Sticky stickyPosition={StickyPositionType.Header}>
+      <Stack horizontal gap="1em" style={{margin: '0 1em'}}>
         <TextField
           label={t('filter-search')}
           onChange={onChangeFilterSearch}
-          styles={controlStyles}
+          styles={{root: {width: '200px'}}}
           errorMessage={invalidSearch ? t('filter-search-invalid') : undefined}
         />
         <Dropdown
@@ -373,7 +367,7 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
           options={langOptions}
           onRenderTitle={x => <span>{x!.length === 2 ? t('lang-all') : x!.map(x => x.text).join(', ')}</span>}
           onChange={onChangeFilterLang}
-          styles={dropdownStyles}
+          styles={{root: {width: '200px'}}}
         />
         <Dropdown
           placeholder={t('term-type-none')}
@@ -383,9 +377,10 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
           options={typeOptions}
           onRenderTitle={x => <span>{x!.length === 3 ? t('term-type-all') : x!.map(x => x.text).join(', ')}</span>}
           onChange={onChangeFilterType}
-          styles={dropdownStyles}
+          styles={{root: {width: '200px'}}}
         />
-      </div>
+      </Stack>
+      </Sticky>
       <DetailsList
         items={visibleItems}
         compact={props.compact}
@@ -398,7 +393,8 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
         layoutMode={DetailsListLayoutMode.justified}
         isHeaderVisible={true}
         onItemInvoked={props.onItemInvoked}
+        onRenderDetailsHeader={onRenderDetailsHeader}
       />
-    </Fabric>
+    </ScrollablePane>
   );
 };
