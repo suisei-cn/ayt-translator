@@ -32,7 +32,7 @@ export interface IFilterListPickerProps {
    */
   onChange?: (list?: FilterList) => void,
 
-  onRenderItem?: (item: string, unknown: boolean) => JSX.Element,
+  onRenderItem?: (item: IPickerItemProps<string>, unknown: boolean) => JSX.Element,
   onRenderSuggestionItem?: (item: string, unknown: boolean) => JSX.Element,
   onResolveSuggestions?: (search: string) => string[],
 
@@ -73,7 +73,7 @@ export const FilterListPicker: React.FunctionComponent<IFilterListPickerProps> =
   function onRenderItem(tag: IPickerItemProps<string>): JSX.Element {
     if (props.onRenderItem) {
       let unknown = (props.options || []).indexOf(tag.item) === -1;
-      return props.onRenderItem(tag.item, unknown);
+      return props.onRenderItem(tag, unknown);
     } else {
       let tagProps: IPickerItemProps<ITag> = { ...tag, item: { name: tag.item, key: tag.item }, onItemChange: undefined };
       return <TagItem  {...tagProps}>{tag.item}</TagItem>;
