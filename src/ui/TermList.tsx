@@ -13,8 +13,9 @@ import { ScrollablePane } from '@fluentui/react/lib/ScrollablePane';
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { useTranslation } from 'react-i18next';
 import { ITerm, comparePriority } from '../schema';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Sticky, StickyPositionType } from '@fluentui/react/lib/Sticky';
+import { Selection } from '@fluentui/react/lib/Selection';
 
 const classNames = mergeStyleSets({
   icon: {
@@ -51,11 +52,14 @@ interface ITermListProps {
   items: ITerm[];
 
   compact?: boolean;
+  selectionMode?: SelectionMode;
+  onSelectionChanged?: (list: ITerm[]) => void,
   onItemInvoked?: (item: ITerm) => void,
 }
 
 export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
   let { t, i18n } = useTranslation();
+  const { selectionMode } = props;
 
   let typeOptions = [
     { key: 'preprocess', text: t('term-type-preprocess') },
@@ -349,43 +353,82 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
     );
   };
 
+  // #region Ugly selection hack
+  // Want we want here is a guaranteed useMemo... but we don't have one ATM sadly.
+  function newSelection(old?: any): {
+    selection: Selection,
+    onSelectionChanged?: ((list: ITerm[]) => void) | undefined,
+  } {
+    if (old && old.selection.mode === selectionMode) return old;
+    let obj = {
+      selection: undefined as unknown as Selection,
+      onSelectionChanged: undefined as ((list: ITerm[]) => void) | undefined,
+    };
+    obj.selection = new Selection({
+      selectionMode: selectionMode,
+      onSelectionChanged: () => {
+        if (obj.onSelectionChanged) {
+          obj.onSelectionChanged(obj.selection.getSelection() as ITerm[]);
+        }
+      }
+    });
+    return obj;
+  }
+
+  const [selection, setSelection] = useState(() => newSelection(null));
+  // eslint-disable-next-line
+  useEffect(() => setSelection(newSelection), [selectionMode]);
+
+  selection.onSelectionChanged = items => {
+    if (props.onSelectionChanged) {
+      props.onSelectionChanged(items);
+    }
+  }
+
+  useEffect(() => {
+    selection.selection.setAllSelected(false);
+  }, [props.items, sortFilter, selection])
+
+  // #endregion
+
   return (
-    <ScrollablePane styles={{stickyAbove: {background: 'white'}}}>
+    <ScrollablePane styles={{ stickyAbove: { background: 'white' } }}>
       <Sticky stickyPosition={StickyPositionType.Header}>
-      <Stack horizontal gap="1em" style={{margin: '0 1em'}}>
-        <TextField
-          label={t('filter-search')}
-          onChange={onChangeFilterSearch}
-          styles={{root: {width: '200px'}}}
-          errorMessage={invalidSearch ? t('filter-search-invalid') : undefined}
-        />
-        <Dropdown
-          placeholder={t('lang-any')}
-          label={t('filter-lang')}
-          selectedKeys={sortFilter.filterLang}
-          multiSelect
-          options={langOptions}
-          onRenderTitle={x => <span>{x!.length === 2 ? t('lang-all') : x!.map(x => x.text).join(', ')}</span>}
-          onChange={onChangeFilterLang}
-          styles={{root: {width: '200px'}}}
-        />
-        <Dropdown
-          placeholder={t('term-type-none')}
-          label={t('filter-type')}
-          selectedKeys={sortFilter.filterType}
-          multiSelect
-          options={typeOptions}
-          onRenderTitle={x => <span>{x!.length === 3 ? t('term-type-all') : x!.map(x => x.text).join(', ')}</span>}
-          onChange={onChangeFilterType}
-          styles={{root: {width: '200px'}}}
-        />
-      </Stack>
+        <Stack horizontal tokens={{ childrenGap: '1em' }} style={{ margin: '0 1em' }}>
+          <TextField
+            label={t('filter-search')}
+            onChange={onChangeFilterSearch}
+            styles={{ root: { width: '200px' } }}
+            errorMessage={invalidSearch ? t('filter-search-invalid') : undefined}
+          />
+          <Dropdown
+            placeholder={t('lang-any')}
+            label={t('filter-lang')}
+            selectedKeys={sortFilter.filterLang}
+            multiSelect
+            options={langOptions}
+            onRenderTitle={x => <span>{x!.length === 2 ? t('lang-all') : x!.map(x => x.text).join(', ')}</span>}
+            onChange={onChangeFilterLang}
+            styles={{ root: { width: '200px' } }}
+          />
+          <Dropdown
+            placeholder={t('term-type-none')}
+            label={t('filter-type')}
+            selectedKeys={sortFilter.filterType}
+            multiSelect
+            options={typeOptions}
+            onRenderTitle={x => <span>{x!.length === 3 ? t('term-type-all') : x!.map(x => x.text).join(', ')}</span>}
+            onChange={onChangeFilterType}
+            styles={{ root: { width: '200px' } }}
+          />
+        </Stack>
       </Sticky>
       <DetailsList
         items={visibleItems}
         compact={props.compact}
         columns={columns}
-        selectionMode={SelectionMode.none}
+        selectionMode={selectionMode}
+        selection={selection.selection}
         getKey={item => {
           return item._id;
         }}
