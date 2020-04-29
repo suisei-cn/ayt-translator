@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         suisei-cn auto translator
-// @namespace    http://suisei.moe/
+// @name         suisei-cn/ayt-translator
+// @namespace    https://github.com/suisei-cn/ayt-translator
 // @version      0.1
 // @description  suisei-cn auto translator
 // @author       You
@@ -17,6 +17,7 @@
   let translatedText = null;
 
   let acceptableTexts = ['Translate Tweet', '翻译推文'];
+  let knownEmojis = {};
 
   function extractText(element) {
     if (element.nodeName === '#text') {
@@ -25,7 +26,10 @@
     if (element.nodeName === 'IMG') {
       let match = /emoji\/v2\/svg\/([0-9a-f]+)\.svg$/.exec(element.src);
       if (match) {
-        return String.fromCodePoint(parseInt(match[1], 16));
+        let codepoint = String.fromCodePoint(parseInt(match[1], 16));
+        knownEmojis[codepoint] = [new RegExp(codepoint, 'g'), element.src];
+        element.alt = codepoint;
+        return codepoint;
       }
       return '';
     }
@@ -44,7 +48,7 @@
       GM_xmlhttpRequest({
         method: "POST",
         url: "http://localhost:3001/translate?to=zh",
-        data: JSON.stringify({text}),
+        data: JSON.stringify({ text }),
         headers: {
           "Content-Type": "application/json"
         },
@@ -54,7 +58,17 @@
             translatedText = document.createElement('div');
             translatedText.textContent = response.translation;
             translatedText.className = translateSpan.parentNode.previousSibling.className;
-            translateSpan.textContent = 'Translated by suisei-cn Auto Translator';
+
+            // Re-enable emojis
+            let html = translatedText.innerHTML;
+            for (let key in knownEmojis) {
+              let [a, b] = knownEmojis[key];
+              html = html.replace(a, `<img alt="${key}" src="${b}" style="top:0.2em;height:1.2em;position:relative;"></img>`);
+            }
+            translatedText.innerHTML = html;
+
+            translatedText.style.fontFamily = 'auto';
+            translateSpan.textContent = 'Translated by suisei-cn/ayt-translator';
             translateSpan.parentNode.insertAdjacentElement('afterend', translatedText);
           } else {
             translateSpan.textContent = 'Translate Tweet';
