@@ -13,6 +13,7 @@
     "filter-type": "过滤处理操作类型",
     "cmd-new": "新建",
     "cmd-edit": "编辑",
+    "cmd-delete": "删除",
     "cmd-reload": "刷新",
     "editor-title": "编辑词条",
     "editor-save": "保存",
@@ -45,5 +46,5 @@
     "context-any": "任意",
     "context-include": "{{list}}",
     "context-except": "除{{list}}",
-    "dummy": ""
+    "loading": "加载中"
 }
