@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Modal } from '@fluentui/react/lib/Modal';
 
@@ -10,7 +10,8 @@ import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar
 import { mergeStyleSets, getTheme, FontWeights } from '@fluentui/react/lib/Styling';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@fluentui/react/lib/Stack';
-import { SelectionMode } from '@uifabric/utilities';
+import { SelectionMode } from '@fluentui/react/lib/Utilities';
+import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
 
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
@@ -33,7 +34,10 @@ const contentStyles = mergeStyleSets({
       fontWeight: FontWeights.semibold,
       padding: '12px 0 0 0',
     },
-  ]
+  ],
+  spinner: {
+    margin: '100px 0px'
+  }
 });
 
 export function TermManager() {
@@ -41,37 +45,77 @@ export function TermManager() {
   let [items, setItems] = useState<ITerm[]>([]);
 
   function reload() {
+    setLoading(true);
     (async () => {
       let response = await fetch('http://localhost:3001/terms');
       let terms = await response.json();
       setItems(terms);
+      setLoading(false);
     })();
   }
 
   useEffect(reload, []);
 
-  let [index, setIndex] = useState(-1);
+  let [edit, setEdit] = useState<ITerm | null>(null);
   let [select, setSelect] = useState<ITerm | null>(null);
   let [term, setTerm] = useState<ITerm | null>(null);
   let [dirty, setDirty] = useState(false);
+  let [loading, setLoading] = useState(true);
 
-  function beginEdit(term: ITerm) {
-    setIndex(items.indexOf(term));
+  function beginEdit(term: ITerm | null) {
+    setEdit(term);
     setDirty(false);
-    setTerm(term);
+    setTerm(term ? term : {
+      input: '',
+      output: '',
+    });
+  }
+
+  function deleteItem(term: ITerm) {
+    setLoading(true);
+    (async () => {
+      let response = await fetch('http://localhost:3001/term/' + term!._id, {
+        method: 'DELETE'
+      });
+      let resp = await response.json();
+      if (resp.error) return alert(resp.error);
+      setItems(items => items.filter(x => x !== term));
+      setSelect(null);
+      setTerm(null);
+      setLoading(false);
+    })();
   }
 
   function saveEdit() {
-    setItems(items => {
-      let newItems = items.slice();
-      let [old] = newItems.splice(index, 1, term!);
-      if (select === old) {
-        setSelect(term!);
+    setLoading(true);
+    (async () => {
+      let response;
+      if (!edit) {
+        response = await fetch('http://localhost:3001/term/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          body: JSON.stringify(term!),
+        });
+      } else {
+        response = await fetch('http://localhost:3001/term/' + term!._id, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          body: JSON.stringify(term!),
+        });
       }
-      return newItems;
-    });
-    setSelect(null);
-    setTerm(null);
+      let resp = await response.json();
+      if (resp.error) return alert(resp.error);
+      setItems(items => {
+        if (!edit) {
+          return items.concat(resp);
+        } else {
+          return items.map(x => x === edit ? resp : x);
+        }
+      });
+      setSelect(null);
+      setTerm(null);
+      setLoading(false);
+    })();
   }
 
   function cancelEdit() {
@@ -84,12 +128,7 @@ export function TermManager() {
         key: 'new',
         text: t('cmd-new'),
         iconProps: { iconName: 'Add' },
-        onClick: () => {
-          beginEdit({
-            input: '',
-            output: '',
-          });
-        }
+        onClick: () => beginEdit(null),
       },
       {
         key: 'edit',
@@ -98,6 +137,14 @@ export function TermManager() {
         iconProps: { iconName: 'Edit' },
         onClick: () => {
           if (select) beginEdit(select);
+        }
+      }, {
+        key: 'ddelete',
+        text: t('cmd-delete'),
+        disabled: !select,
+        iconProps: { iconName: 'delete' },
+        onClick: () => {
+          if (select) deleteItem(select);
         }
       },
       {
@@ -143,6 +190,16 @@ export function TermManager() {
           </Stack>
         </Modal>
       ) : undefined}
+      <Modal
+        isOpen={loading}
+        isBlocking
+      >
+        <Spinner
+          label={t('loading')}
+          size={SpinnerSize.large}
+          className={contentStyles.spinner}
+        ></Spinner>
+      </Modal>
     </Stack>
   );
 }

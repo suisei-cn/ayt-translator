@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import { getCollection } from './db';
 
@@ -7,7 +7,7 @@ import { Translator } from './core/translator';
 import { GoogleHtmlTranslator } from './core/google';
 import { MicrosoftTranslator } from './core/microsoft';
 
-import { ITerm, comparePriority } from './schema';
+import { ITerm, comparePriority, validate } from './schema';
 
 const db = getCollection('dictionary');
 
@@ -45,8 +45,8 @@ loadTerms();
 let translatorEn: Translator;
 let translatorZh: Translator;
 if (process.env['MICROSOFT_API_KEY']) {
-  translatorEn = new MicrosoftTranslator('en', process.env['MICROSOFT_API_KEY']);
-  translatorZh = new MicrosoftTranslator('zh', process.env['MICROSOFT_API_KEY']);
+  translatorEn = new MicrosoftTranslator('en', process.env['MICROSOFT_API_KEY']!);
+  translatorZh = new MicrosoftTranslator('zh', process.env['MICROSOFT_API_KEY']!);
 } else {
   translatorEn = new GoogleHtmlTranslator('en');
   translatorZh = new GoogleHtmlTranslator('zh');
@@ -57,46 +57,90 @@ const port = 3001;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use((req, res, next) => {
+app.use((_req, res, next) => {
   res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length');
   next();
 })
 
-app.get('/terms', (req, res) => {
-  (async () => {
-    try {
-      res.json(await db.find({}));
-    } catch (error) {
-      res.status(500);
-      res.json(error.message);
-    }
-  })();
-})
+function wrapAsync(f: (req: Request, res: Response) => Promise<void>) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    f(req, res).catch(ex => next(ex));
+  };
+}
 
-app.post('/translate', (req, res) => {
-    let targetLang = req.query.to;
-    if (targetLang != 'en' && targetLang != 'zh') {
-        res.status(403);
-        res.json({error: 'Invalid query'});
-        return;
-    }
+app.get('/terms', wrapAsync(async (_req, res) => {
+  res.json(await db.find({}));
+}));
 
-    let body = req.body && req.body.text;
-    if (typeof body !== 'string') {
-        res.status(403);
-        res.json({error: 'Invalid body'});
-        return;
-    }
+app.get('/term/:id', wrapAsync(async (req, res) => {
+  let result = await db.find<ITerm>({ _id: req.params.id });
+  if (result.length === 0) {
+    throw new RangeError('Term ID does not exist');
+  }
+  res.json(result[0]);
+}));
 
-    let translator = targetLang == 'zh' ? translatorZh : translatorEn;
-    let dictTranslator = new DictionaryTranslator(targetLang, translator, allTerms);
+app.post('/term', wrapAsync(async (req, res) => {
+  let term = req.body;
+  validate(term);
+  delete term._id;
+  let newDoc = await db.insert<ITerm>(term);
+  res.json(newDoc);
+}));
 
-    dictTranslator.translate(body).then(text => {
-        res.json({translation: text});
-    }, error => {
-        res.status(500);
-        res.json(error.message);
-    });
+app.put('/term/:id', wrapAsync(async (req, res) => {
+  let term = req.body;
+  validate(term);
+  delete term._id;
+  let result = await db.update<ITerm>({ _id: req.params.id }, term, { returnUpdatedDocs: true });
+  if (result.numberOfUpdate === 0) {
+    throw new RangeError('Term ID does not exist');
+  }
+  res.json(result.affectedDocuments);
+}));
+
+app.delete('/term/:id', wrapAsync(async (req, res) => {
+  let number = await db.remove({_id: req.params.id}, {});
+  if (number === 0) {
+    throw new RangeError('Term ID does not exist');
+  }
+  res.json({});
+}));
+
+app.post('/translate', wrapAsync(async (req, res) => {
+  let targetLang = req.query.to;
+  if (targetLang != 'en' && targetLang != 'zh') {
+    res.status(403);
+    res.json({ error: 'Invalid query' });
+    return;
+  }
+
+  let body = req.body && req.body.text;
+  if (typeof body !== 'string') {
+    res.status(403);
+    res.json({ error: 'Invalid body' });
+    return;
+  }
+
+  let translator = targetLang == 'zh' ? translatorZh : translatorEn;
+  let dictTranslator = new DictionaryTranslator(targetLang, translator, allTerms);
+
+  res.json({ translation: await dictTranslator.translate(body) });
+}));
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  if (!(err instanceof Error)) {
+    return next();
+  }
+  if (err instanceof RangeError) {
+    res.status(403);
+  } else {
+    res.status(500);
+    console.error(err.stack);
+  }
+  res.json({ error: err.message });
 });
 
 app.listen(port, () => console.log(`API server listening at http://localhost:${port}`));

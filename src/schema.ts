@@ -66,13 +66,18 @@ function validateFilterList(json: any): asserts json is FilterList {
 
 export function validate(json: any): asserts json is ITerm  {
   if (typeof json.input !== 'string') throw new RangeError('Invalid Term: input must be string');
+  try {
+    new RegExp(json.input);
+  } catch (ex) {
+    throw new RangeError('Invalid Term: input must be valid RegExp');
+  }
   if (typeof json.output !== 'string') throw new RangeError('Invalid Term: output must be string');
   for (let key of Object.keys(json)) {
     if (json[key] === undefined) continue;
     switch (key) {
       case 'input': case 'output': break;
       case '_id':
-        if (typeof json.id !== 'string') throw new RangeError('Invalid Term: _id must be string'); break;
+        if (typeof json._id !== 'string') throw new RangeError('Invalid Term: _id must be string'); break;
       case 'targetLang':
         if (typeof json.targetLang !== 'string') throw new RangeError('Invalid Term: targetLang must be string'); break;
       case 'translator': validateFilterList(json.translator); break;
