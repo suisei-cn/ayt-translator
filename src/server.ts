@@ -88,6 +88,8 @@ app.post('/term', wrapAsync(async (req, res) => {
   delete term._id;
   let newDoc = await db.insert<ITerm>(term);
   res.json(newDoc);
+
+  loadTerms();
 }));
 
 app.put('/term/:id', wrapAsync(async (req, res) => {
@@ -99,6 +101,8 @@ app.put('/term/:id', wrapAsync(async (req, res) => {
     throw new RangeError('Term ID does not exist');
   }
   res.json(result.affectedDocuments);
+
+  loadTerms();
 }));
 
 app.delete('/term/:id', wrapAsync(async (req, res) => {
@@ -107,6 +111,8 @@ app.delete('/term/:id', wrapAsync(async (req, res) => {
     throw new RangeError('Term ID does not exist');
   }
   res.json({});
+
+  loadTerms();
 }));
 
 app.post('/translate', wrapAsync(async (req, res) => {
