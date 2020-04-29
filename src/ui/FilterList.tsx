@@ -34,7 +34,7 @@ export interface IFilterListPickerProps {
 
   onRenderItem?: (item: string, unknown: boolean) => JSX.Element,
   onRenderSuggestionItem?: (item: string, unknown: boolean) => JSX.Element,
-  onResolveSuggestions?: (search: string, list: string[]) => string[],
+  onResolveSuggestions?: (search: string) => string[],
 
   styles?: Partial<IStackStyles>,
 }
@@ -93,17 +93,16 @@ export const FilterListPicker: React.FunctionComponent<IFilterListPickerProps> =
     tagList = tagList || [];
     let list: string[];
     if (props.onResolveSuggestions) {
-      list = props.onResolveSuggestions(filterText, tagList!);
+      list = props.onResolveSuggestions(filterText);
     } else {
       let searchLower = filterText.toLowerCase();
       list = propOptions
-        .filter(tag => tag.toLowerCase().indexOf(searchLower) !== -1)
-        .filter(tag => tagList!.indexOf(tag) === -1);
+        .filter(tag => tag.toLowerCase().indexOf(searchLower) !== -1);
     }
     if (props.allowUnknown && propOptions.indexOf(filterText) === -1) {
       list.push(filterText);
     }
-    return list;
+    return list.filter(tag => tagList!.indexOf(tag) === -1);
   }
 
   return <Stack onBlur={onBlur} styles={props.styles}>
@@ -115,10 +114,6 @@ export const FilterListPicker: React.FunctionComponent<IFilterListPickerProps> =
     />
     {exclude !== undefined ? <BasePicker<string, IBasePickerProps<string>>
       onRenderItem={onRenderItem}
-      // onRenderItem= (props: IPeoplePickerItemSelectedProps) => <PeoplePickerItem {...props} />,
-      // onRenderSuggestionsItem=(personaProps: IPersonaProps, suggestionsProps?: IBasePickerSuggestionsProps) => (
-      //   <PeoplePickerItemSuggestion personaProps={personaProps} suggestionsProps={suggestionsProps} />
-      // ),
       onResolveSuggestions={onResolveSuggestions}
       onRenderSuggestionsItem={onRenderSuggestionsItem}
       onChange={list => setList(list || [])}
@@ -142,7 +137,7 @@ export interface IFilterListDropdownProps {
 }
 
 export const FilterListDropdown: React.FunctionComponent<IFilterListDropdownProps> = (props) => {
-  const {options, filterList, onRenderItem} = props;
+  const { options, filterList, onRenderItem } = props;
 
   const dropdownOptions: IDropdownOption[] = useMemo(() => {
     return options.map(x => {
