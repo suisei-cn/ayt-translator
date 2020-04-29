@@ -11,6 +11,8 @@ import HttpBackend from 'i18next-http-backend';
 
 import { initializeIcons } from '@fluentui/react/lib/Icons';
 
+import 'office-ui-fabric-react/dist/css/fabric.css';
+
 initializeIcons();
 
 i18n

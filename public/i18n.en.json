@@ -46,5 +46,8 @@
     "context-any": "Any",
     "context-include": "{{list}}",
     "context-except": "Any except {{list}}",
+    "tab-editor": "Term Editor",
+    "tab-test": "Translation Test",
+    "translate": "Translate",
     "loading": "Loading"
 }

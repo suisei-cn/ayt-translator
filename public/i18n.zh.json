@@ -21,7 +21,7 @@
     "editor-input": "匹配正则表达式",
     "editor-output": "替换为",
     "editor-targetLang": "当目标语言为",
-    "editor-type": "替换类型",
+    "editor-type": "操作类型",
     "editor-translator": "当翻译器为",
     "editor-priority": "优先级",
     "editor-context": "语境",
@@ -46,5 +46,8 @@
     "context-any": "任意",
     "context-include": "{{list}}",
     "context-except": "除{{list}}",
+    "tab-editor": "词条编辑",
+    "tab-test": "翻译测试",
+    "translate": "翻译",
     "loading": "加载中"
 }
