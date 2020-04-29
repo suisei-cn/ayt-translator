@@ -394,7 +394,7 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
   return (
     <ScrollablePane styles={{ stickyAbove: { background: 'white' } }}>
       <Sticky stickyPosition={StickyPositionType.Header}>
-        <Stack horizontal tokens={{ childrenGap: '1em' }} style={{ margin: '0 1em' }}>
+        <Stack horizontal tokens={{ childrenGap: '1em' }} style={{ margin: selectionMode === SelectionMode.none ? '0 12px' : '0 60px' }}>
           <TextField
             label={t('filter-search')}
             onChange={onChangeFilterSearch}

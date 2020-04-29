@@ -10,6 +10,34 @@ export interface ExcludeList {
 
 export type FilterList = IncludeList | ExcludeList;
 
+export function filterListToList(filterList: FilterList, allOptions: string[]): string[] {
+  if (!filterList.exclude) {
+    return filterList.list;
+  } else {
+    return allOptions.filter(x => filterList.list.indexOf(x) === -1);
+  }
+}
+
+export function listToFilterList(list: string[], allOptions: string[]): FilterList {
+  if (list.length === allOptions.length) {
+    return {
+      exclude: true,
+      list: [],
+    };
+  }
+  if (list.length * 2 > allOptions.length) {
+    return {
+      exclude: true,
+      list: allOptions.filter(x => list.indexOf(x) === -1),
+    };
+  } else {
+    return {
+      exclude: false,
+      list: list,
+    };
+  }
+}
+
 export interface ITerm {
   _id?: string;
   input: string;
