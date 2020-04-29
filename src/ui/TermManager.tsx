@@ -12,11 +12,14 @@ import { useTranslation } from 'react-i18next';
 import { Stack } from '@fluentui/react/lib/Stack';
 import { SelectionMode } from '@fluentui/react/lib/Utilities';
 import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
+import { Overlay } from 'office-ui-fabric-react/lib/Overlay';
 
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
   fitAll: {
     height: '100%',
+    // Fix the position of overlay
+    position: 'relative',
   },
   fixPosition: {
     position: 'relative',
@@ -36,7 +39,8 @@ const contentStyles = mergeStyleSets({
     },
   ],
   spinner: {
-    margin: '100px 0px'
+    height: '100%',
+    margin: 'auto',
   }
 });
 
@@ -190,16 +194,15 @@ export function TermManager() {
           </Stack>
         </Modal>
       ) : undefined}
-      <Modal
-        isOpen={loading}
-        isBlocking
-      >
-        <Spinner
-          label={t('loading')}
-          size={SpinnerSize.large}
-          className={contentStyles.spinner}
-        ></Spinner>
-      </Modal>
+      {loading ? (
+        <Overlay>
+          <Spinner
+            label={t('loading')}
+            size={SpinnerSize.large}
+            className={contentStyles.spinner}
+          ></Spinner>
+        </Overlay>
+      ) : undefined}
     </Stack>
   );
 }
