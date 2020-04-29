@@ -1,27 +1,92 @@
 {"input":"すいせいみゅーじっく","output":"彗星Music","targetLang":"zh","_id":"0XM4J41dUUHRUATm"}
-{"input":"超!A&G\\+","output":"Cho!A&G+","targetLang":"en","_id":"2mZ0mGxR7kFNVnRg"}
+{"input":"泉彩","output":"泉彩","targetLang":"zh","_id":"0slhfHInEIfSkWfV"}
+{"input":"千本桜","output":"千本樱","targetLang":"zh","_id":"0ysZQUwbEj7TKQax"}
+{"input":"ゲリラ","output":"突击","targetLang":"zh","_id":"1aADB8gyCttXWFSo"}
+{"input":"ぺこら","output":"佩克拉","targetLang":"zh","_id":"2i4fHagzJywoP0Ot"}
+{"input":"超!A&G","output":"Cho!A&G","targetLang":"en","_id":"2mZ0mGxR7kFNVnRg"}
+{"input":"あつ森","output":"动森","targetLang":"zh","_id":"4cr4THPXNtqsz9YM"}
+{"input":"スパチャ","output":"スーパーチャット","type":"preprocess","_id":"4nRIwpQ6L9He5p7J"}
+{"input":"かなたん?","output":"彼方碳","targetLang":"zh","_id":"5OIQDEFwncmVdVYm"}
+{"input":"メンバー限定","output":"会员限定","targetLang":"zh","_id":"5T4JjTYeyRg2rk37"}
+{"input":"兎田ぺこら","output":"兔田佩克拉","targetLang":"zh","_id":"68TCNb0Wc3y45r4e"}
+{"input":"ヒットウーマン","output":"女杀手","targetLang":"zh","context":{"exclude":false,"list":["星街すいせい"]},"_id":"6D6z04KRMEeldhVL"}
 {"input":"星詠み","output":"星咏者","targetLang":"zh","_id":"6c6jRPBzRdilS9GK"}
 {"input":"配信","output":"ライブストリーム","type":"preprocess","targetLang":"zh","comment":"防止被翻译成交付","_id":"6hrtHnozNAWKlznu"}
 {"input":"神楽めあ","output":"神乐Mea","targetLang":"zh","_id":"7F1kERD2iV0swuSL"}
 {"input":"赤井はあと","output":"赤井心","targetLang":"zh","_id":"7VInzU889ULCjebe"}
 {"input":"文化放送","output":"文化放送","targetLang":"zh","_id":"9nvJ4rQ3jvNn8uyc"}
+{"input":"夜勤事件","output":"夜勤事件","targetLang":"zh","_id":"9o2KLwNS2EO8I5fY"}
+{"input":"おえもり","output":"绘森","targetLang":"zh","_id":"ARxSt6W2MvmvWN28"}
 {"input":"犬山たまき","output":"犬山玉姬","targetLang":"zh","_id":"AaVEWlRC1ZMIMrBH"}
+{"input":"とこちゃん","output":"床酱","targetLang":"zh","_id":"BZRrYU79EQBbZ59N"}
+{"input":"NEXT COLOR PLANET","output":"NEXT COLOR PLANET","comment":"歌名不翻译","_id":"C0afjnGNSpP1is8H"}
+{"input":"フレア","output":"芙蕾雅","targetLang":"zh","_id":"CyqQkbrAFs1eX2rb"}
+{"input":"るぴちゃん","output":"Lupi酱","context":{"exclude":false,"list":["星街すいせい"]},"targetLang":"zh","_id":"D2Sn2dTxcVnIxtp4"}
+{"input":"手島(?:先生|せんせい)","output":"手岛老师","targetLang":"zh","context":{"exclude":false,"list":["星街すいせい"]},"_id":"Dn6GQGlaKzbLKqYK"}
+{"input":"おえかき心理テスト","output":"绘画心理测验","targetLang":"zh","_id":"Drh2lfI4bmDIE8Th"}
 {"input":"しぐれうい","output":"时雨羽衣","targetLang":"zh","_id":"E7epnUOHfcxgWBLW"}
+{"input":"お[え絵][か描]きの森","output":"绘画之森","targetLang":"zh","_id":"ETRvWvLaBC7CZGVm"}
 {"input":"ガ[シチ]ャ","output":"抽卡","targetLang":"zh","_id":"EnmUero3tcDduYUZ"}
 {"input":"文化放送","output":"JOQR","targetLang":"en","_id":"FtfZqhfszGj4qZlQ"}
+{"input":"運営(さん)?","output":"运营","targetLang":"zh","_id":"G222I2WKtumqPMZG"}
+{"input":"(ヴァンガ(ード?)|[Vv]anguard )ZERO","output":"Vanguard Zero","targetLang":"en","_id":"HoDy0vxNaIPXx3tA"}
+{"input":"堰代ミコ","output":"堰代ミコ","targetLang":"zh","_id":"HrUrfVXtz7G80hUH"}
 {"input":"あさひ","output":"朝日","targetLang":"zh","_id":"IaXc8jNMv5gB9ByP"}
+{"input":"ヴァンガ(ード)?","output":"卡片战士先导者","targetLang":"zh","_id":"JcmFoyqJ9j5yuRWq"}
+{"input":"karASHi","output":"karASHi","_id":"KQo7OnIOTiPY2Qow"}
+{"input":"出雲霞","output":"出云霞","targetLang":"zh","_id":"Mhl09nbgyASGdNYm"}
+{"input":"桐生ココ","output":"桐生可可","targetLang":"zh","_id":"NKRsaMPl7trlrbsJ"}
+{"input":"宝鐘マリン","output":"宝钟玛琳","targetLang":"zh","_id":"NaSC1jO3D4wxjb5y"}
+{"input":"すいちゃん","output":"彗酱","targetLang":"zh","_id":"OBeyh5Yk0RaxTu3S"}
+{"input":"まつりちゃん","output":"祭酱","targetLang":"zh","_id":"OQ48Y81XGhgVNVyu"}
+{"input":"マリン","output":"玛琳","targetLang":"zh","_id":"PB86nN3pc5BXjmWb"}
+{"input":"みこちゃん","output":"miko酱","targetLang":"zh","_id":"Qb1eKjCpR6V4shvm"}
 {"input":"シャニマス","output":"The Idolmaster: Shiny Colors","targetLang":"en","_id":"TFXdfk7a0LuSotuY"}
 {"input":"ほしまちすたじお","output":"星街Studio","targetLang":"zh","_id":"THKZX0g9PcsnTghN"}
 {"input":"ホロライブ","output":"Hololive","_id":"UHz657mD9EoeP9wR"}
+{"input":"ほしまち","output":"星街","targetLang":"zh","_id":"UYO2xhWjjVYzbFTK"}
+{"input":"マリカ","output":"マリオカート","type":"preprocess","_id":"VbZPnj8YD8TAPsBI"}
+{"input":"えーちゃん","output":"A酱","targetLang":"zh","_id":"WoEGf8MSdDDtlg4e"}
+{"input":"クソザコ","output":"杂鱼","targetLang":"zh","_id":"WoQxKzk3dDh9D451"}
+{"input":"修羅場","output":"修罗场","targetLang":"zh","_id":"WvAyckrxKvyoF7dL"}
 {"input":"すいせい","output":"彗星","targetLang":"zh","_id":"YgZEX8zEgwhppVKk"}
-{"input":"超!A&G\\+","output":"超!A&G+","targetLang":"zh","_id":"bOJeADZtnrAyJYwa"}
+{"input":"どうぶつの森","output":"动物森友会","targetLang":"zh","_id":"abOxxA8UWgHB2ykQ"}
+{"input":"超!A&G","output":"超!A&G","targetLang":"zh","_id":"bOJeADZtnrAyJYwa"}
 {"input":"夏色まつり","output":"夏色祭","targetLang":"zh","_id":"bsMo7DebZfOaPtn3"}
+{"input":"マイクラ","output":"マインクラフト","type":"preprocess","_id":"cBjKQ1yLLg3cAFAg"}
+{"input":"あんスタ","output":"Ensemble Stars","targetLang":"en","_id":"cKBllPtiRFkVGtog"}
+{"input":"テトリス","output":"俄罗斯方块","comment":"这必应也太弱了","translator":{"exclude":false,"list":["Microsoft"]},"targetLang":"zh","_id":"g3Et1qnj36a1smRV"}
 {"input":"ほしまちすたじお","output":"Hoshimachi Studio","targetLang":"en","_id":"gNE9AqXBNmbuz7PI"}
+{"input":"るしあ","output":"露西娅","targetLang":"zh","_id":"i0FDnCEmRg77Ir2C"}
 {"input":"ロリ","output":"萝莉","targetLang":"zh","_id":"iFC7ZJ2f67Kq321Q"}
 {"input":"ガ[シチ]ャ","output":"Gacha","targetLang":"en","_id":"ivLbh6F6pwKpZXoo"}
+{"input":"イケボ","output":"イケメンボイス","type":"preprocess","_id":"kAzsvMvqVtmjMrzy"}
+{"input":"ういちゃん","output":"羽衣酱","targetLang":"zh","_id":"kdk2JnJ4hOSRnZS5"}
+{"input":"ボカロ","output":"V家","targetLang":"zh","_id":"labzjEpdPyi3XZ9a"}
 {"input":"(?<=[^ァ-ン])アレ(?![ァ-ン])","output":"あれ","translator":{"exclude":false,"list":["Google"]},"type":"preprocess","_id":"mUgivfHCaXNRaKWT"}
+{"input":"(ヴァンガ(ード?)|[Vv]anguard )ZERO","output":"卡片战斗先导者ZERO","targetLang":"zh","_id":"mkMDoTYw96P7wdTR"}
 {"input":"星街すいせい","output":"星街彗星","targetLang":"zh","_id":"n2cL4r1ummjrTamu"}
+{"input":"はあとch","output":"心心直播间","targetLang":"zh","_id":"o44pfU9lQBtmi3EZ"}
 {"input":"配信","output":"ストリーム","type":"preprocess","targetLang":"en","comment":"This prevents it to be translated to delivery","_id":"oTCR1bnox1lxtRoJ"}
+{"input":"郡道","output":"郡道","targetLang":"zh","_id":"obWTkOEcUbcuQvte"}
+{"input":"潤羽るしあ","output":"润羽露西娅","targetLang":"zh","_id":"pu9IbzWtiibc2aXf"}
+{"input":"藍ちゃん","output":"蓝酱","context":{"exclude":false,"list":["星街すいせい"]},"targetLang":"zh","_id":"qAxQQttYlYrE7Ohr"}
 {"input":"ロリ","output":"Loli","targetLang":"en","_id":"rLMezzESl9EF0gmA"}
+{"input":"えーちゃん","output":"A-chan","targetLang":"en","_id":"rV1sxzzXpix1t382"}
+{"input":"あんスタ","output":"偶像梦幻祭","targetLang":"zh","_id":"rx9dnIz6PllcO5VT"}
+{"input":"邮票","output":"表情","type":"postprocess","comment":"スタンプ，这个基本上都是翻译成邮票，就让翻译其知道其名词词性然后后修正了","targetLang":"zh","_id":"s6CZhEhxNYGTCPaX"}
+{"input":"たまきくん","output":"玉姬君","targetLang":"zh","_id":"sbTzGZTlQ0ENSM4H"}
+{"input":"たまき","output":"玉姬","targetLang":"zh","_id":"tBXXk12d0YROurMx"}
+{"input":"セトリ","output":"セットリスト","type":"preprocess","_id":"uCIPQT41LxxhDhPH"}
+{"input":"bilibili|BILIBILI","output":"Bilibili","_id":"uJpV2Fq6L3wGEi1o"}
+{"input":"はあちゃま","output":"心心","targetLang":"zh","_id":"uPrOlDDnK7LZamlF"}
 {"input":"シャニマス","output":"偶像大师闪耀色彩","targetLang":"zh","_id":"v1LQeK4jWrfmRX8z"}
+{"input":"Thief Simulator","output":"Thief Simulator","_id":"vPs8TD0e1lI7wfak"}
+{"input":"天球、彗星は夜を跨いで","output":"天球、彗星は夜を跨いで","targetLang":"zh","comment":"歌名不翻译","_id":"wJzmKS06hzm0kP3k"}
+{"input":"高垣楓","output":"高垣枫","targetLang":"zh","_id":"xDTmDxcRtKYUsZHx"}
+{"input":"星川サラ","output":"星川萨拉","targetLang":"zh","_id":"xNTeHBEK0bWtlikv"}
+{"input":"雪山ホロ人狼","output":"雪山Holo人狼","targetLang":"zh","_id":"ystWdfUssXVBrPWj"}
 {"input":"星街すいせい","output":"Hoshimachi Suisei","targetLang":"en","_id":"z43TQnCMK8zQCsZ5"}
+{"input":"ルーナたん","output":"露娜碳","targetLang":"zh","_id":"zbU7cTpARs5wjZCf"}
+{"input":"ホラゲ","output":"ホラーゲーム","type":"preprocess","_id":"zdSaFKPX0cr2BRlo"}
+{"input":"トワちゃん","output":"永远酱","targetLang":"zh","_id":"zh9dJMOSmXtEnAUB"}
