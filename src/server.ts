@@ -36,7 +36,7 @@ let allTerms: Term<any>[] = [];
 
 async function loadTerms() {
   let terms: ITerm[] = await db.find({});
-  terms.sort(comparePriority);
+  terms.sort((x, y) => -comparePriority(x, y));
   allTerms = terms.map(x => new RegexTerm(new RegExp(x.input), x.output, x as any));
 }
 
