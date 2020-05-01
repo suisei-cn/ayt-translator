@@ -7,7 +7,7 @@ AYT is the acronym for "**A**uto Virtual **Y**outuber **T**ranslator", ~~not **A
 
 In the project directory, you can run:
 
-### `ts-node src/server.js`
+### `ts-node src/server.ts`
 
 Start the translation service. The API is available at [http://localhost:3001](http://localhost:3000).
 
