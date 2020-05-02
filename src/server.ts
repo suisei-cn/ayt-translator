@@ -6,6 +6,7 @@ import { Term, TermConfig, DictionaryTranslator } from './core/dictionary';
 import { Translator } from './core/translator';
 import { GoogleHtmlTranslator } from './core/google';
 import { MicrosoftTranslator } from './core/microsoft';
+import { BaiduFanyi } from './core/baidu';
 
 import { ITerm, comparePriority, validate } from './schema';
 
@@ -44,7 +45,10 @@ loadTerms();
 
 let translatorEn: Translator;
 let translatorZh: Translator;
-if (process.env['MICROSOFT_API_KEY']) {
+if (process.env['BAIDU_APPID'] && process.env['BAIDU_SECRET']) {
+  translatorEn = new BaiduFanyi('en', process.env['BAIDU_APPID']!, process.env['BAIDU_SECRET']!);
+  translatorZh = new BaiduFanyi('zh', process.env['BAIDU_APPID']!, process.env['BAIDU_SECRET']!);
+} else if (process.env['MICROSOFT_API_KEY']) {
   translatorEn = new MicrosoftTranslator('en', process.env['MICROSOFT_API_KEY']!);
   translatorZh = new MicrosoftTranslator('zh', process.env['MICROSOFT_API_KEY']!);
 } else {
@@ -106,7 +110,7 @@ app.put('/term/:id', wrapAsync(async (req, res) => {
 }));
 
 app.delete('/term/:id', wrapAsync(async (req, res) => {
-  let number = await db.remove({_id: req.params.id}, {});
+  let number = await db.remove({ _id: req.params.id }, {});
   if (number === 0) {
     throw new RangeError('Term ID does not exist');
   }
