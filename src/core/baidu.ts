@@ -3,7 +3,7 @@ import { Translator } from './translator';
 import crypto from 'crypto';
 
 export class BaiduFanyi implements Translator {
-  name!:string;
+  name!: string;
 
   targetLang: string;
   appid: string;
@@ -23,7 +23,7 @@ export class BaiduFanyi implements Translator {
 
     const params = new URLSearchParams();
     params.append('q', text);
-    params.append('from', 'ja');
+    params.append('from', 'jp');
     params.append('to', this.targetLang.split('-')[0]);
     params.append('appid', this.appid);
     params.append('salt', salt);
@@ -41,7 +41,7 @@ export class BaiduFanyi implements Translator {
     if (!response.ok) {
       throw new Error(body.error.message);
     }
-    return body.trans_result[0].dst;
+    return body.trans_result.map((x: any) => x.dst).join('\n');
   }
 }
 BaiduFanyi.prototype.name = 'Baidu';

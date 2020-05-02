@@ -32,7 +32,7 @@ const knownPersona: { [name: string]: IPersonaProps & { search: string } } = {};
 knownContexts.forEach(x => knownPersona[x.text] = x);
 
 const contextTags = Object.keys(knownPersona);
-const allTranslators = ['Google', 'Microsoft'];
+const allTranslators = ['Google', 'Microsoft', 'Baidu'];
 
 function resolveContextSuggestions(search: string) {
   let searchLower = search.toLowerCase();
@@ -106,12 +106,7 @@ export const TermEditor: React.FunctionComponent<ITermEditorProps> = (props) => 
   };
 
   function renderTranslator(list: string[]) {
-    let array = [];
-    for (let item of ['Google', 'Microsoft']) {
-      if (list.indexOf(item) !== -1) {
-        array.push(<img key={item} src={item.toLowerCase() + '.png'} className={classNames.icon} alt={item} />);
-      }
-    }
+    let array = list.map(item => <img key={item} src={item.toLowerCase() + '.png'} className={classNames.icon} alt={item} />)
     return <div>{array}</div>;
   }
 

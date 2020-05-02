@@ -12,7 +12,7 @@ import { Stack } from '@fluentui/react/lib/Stack';
 import { ScrollablePane } from '@fluentui/react/lib/ScrollablePane';
 import { mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { useTranslation } from 'react-i18next';
-import { ITerm, comparePriority } from '../schema';
+import { ITerm, comparePriority, filterListToList } from '../schema';
 import { useState, useMemo, useEffect } from 'react';
 import { Sticky, StickyPositionType } from '@fluentui/react/lib/Sticky';
 import { Selection } from '@fluentui/react/lib/Selection';
@@ -24,6 +24,7 @@ const classNames = mergeStyleSets({
     maxWidth: '16px',
   },
 });
+const allTranslators = ['Google', 'Microsoft', 'Baidu'];
 
 function compareString(a: string, b: string) {
   return a === b ? 0 : (a < b ? -1 : 1);
@@ -109,23 +110,8 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
     };
 
     function renderTranslator(term: ITerm) {
-      let def = term.translator ? term.translator.exclude : true;
-      let allowed: { [index: string]: boolean } = {
-        'Google': def,
-        'Microsoft': def,
-      };
-      if (term.translator) {
-        for (let item of term.translator.list) {
-          allowed[item] = !def;
-        }
-      }
-      let array = [];
-      for (let item of ['Google', 'Microsoft']) {
-        if (allowed[item]) {
-          array.push(<img key={item} src={item.toLowerCase() + '.png'} className={classNames.icon} alt={item} />);
-        }
-      }
-
+      let list = term.translator ? filterListToList(term.translator, allTranslators) : allTranslators;
+      let array = list.map(item => <img key={item} src={item.toLowerCase() + '.png'} className={classNames.icon} alt={item} />)
       return <div>{array}</div>;
     }
 
