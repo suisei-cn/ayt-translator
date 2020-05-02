@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import { getCollection } from './db';
 
-import { Term, TermConfig, DictionaryTranslator } from './core/dictionary';
+import { Term, TermConfig, DictionaryTranslator, UrlTerm, HashtagTerm } from './core/dictionary';
 import { Translator } from './core/translator';
 import { GoogleHtmlTranslator } from './core/google';
 import { MicrosoftTranslator } from './core/microsoft';
@@ -39,6 +39,7 @@ async function loadTerms() {
   let terms: ITerm[] = await db.find({});
   terms.sort((x, y) => -comparePriority(x, y));
   allTerms = terms.map(x => new RegexTerm(new RegExp(x.input), x.output, x as any));
+  allTerms.splice(0, 0, new UrlTerm(), new HashtagTerm());
 }
 
 loadTerms();
