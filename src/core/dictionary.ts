@@ -1,5 +1,5 @@
 import { Translator } from './translator';
-import emojiRegex from 'emoji-regex';
+import { EMOJI_REGEX } from './regex';
 
 export interface TermConfig {
   /**
@@ -123,7 +123,6 @@ export class HashtagTerm extends Term<string> {
  * Identify emojis in the text, and avoid feeding them through machine translation.
  */
 export class EmojiTerm extends Term<string> {
-  static REGEX = new RegExp(emojiRegex().source, 'u');
   constructor() {
     super({
       translator: null,
@@ -133,7 +132,7 @@ export class EmojiTerm extends Term<string> {
   }
 
   scan(_ctx: DictionaryTranslator, text: string): [number, number, string] | null {
-    let result = EmojiTerm.REGEX.exec(text);
+    let result = EMOJI_REGEX.exec(text);
     if (!result) return null;
     return [result.index, result.index + result[0].length, result[0]];
   }
