@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import { getCollection } from './db';
 
-import { Term, TermConfig, DictionaryTranslator, UrlTerm, HashtagTerm } from './core/dictionary';
+import { Term, TermConfig, DictionaryTranslator, UrlTerm, HashtagTerm, EmojiTerm } from './core/dictionary';
 import { Translator } from './core/translator';
 import { GoogleHtmlTranslator } from './core/google';
 import { MicrosoftTranslator } from './core/microsoft';

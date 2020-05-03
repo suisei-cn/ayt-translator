@@ -1,4 +1,5 @@
 import { Translator } from './translator';
+import emojiRegex from 'emoji-regex';
 
 export interface TermConfig {
   /**
@@ -118,6 +119,30 @@ export class HashtagTerm extends Term<string> {
   }
 }
 
+/**
+ * Identify emojis in the text, and avoid feeding them through machine translation.
+ */
+export class EmojiTerm extends Term<string> {
+  static REGEX = new RegExp(emojiRegex().source, 'u');
+  constructor() {
+    super({
+      translator: null,
+      type: 'transform',
+      targetLang: null,
+    });
+  }
+
+  scan(_ctx: DictionaryTranslator, text: string): [number, number, string] | null {
+    let result = EmojiTerm.REGEX.exec(text);
+    if (!result) return null;
+    return [result.index, result.index + result[0].length, result[0]];
+  }
+
+  async process(_ctx: DictionaryTranslator, marker: string): Promise<string> {
+    return marker;
+  }
+}
+
 const USABLE_CHAR = "BCDFGHJKLMNPQRSTVWXY";
 const REPLACEMENT_MATCHER = /(ZM[BCDFGHJKLMNPQRSTVWXY]+Z)/i;
 
@@ -131,6 +156,7 @@ function encodeReplacementString(index: number): string {
 }
 
 function decodeReplacementString(string: string): number {
+  string = string.toUpperCase();
   let index = 0;
   for (let i = 2; i < string.length - 1; i++) {
     index = index * USABLE_CHAR.length + USABLE_CHAR.indexOf(string[i]);
