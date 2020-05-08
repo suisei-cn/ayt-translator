@@ -51,7 +51,7 @@ export function TermManager() {
   function reload() {
     setLoading(true);
     (async () => {
-      let response = await fetch('http://localhost:3001/terms');
+      let response = await fetch('/api/terms');
       let terms = await response.json();
       setItems(terms);
       setLoading(false);
@@ -78,7 +78,7 @@ export function TermManager() {
   function deleteItem(term: ITerm) {
     setLoading(true);
     (async () => {
-      let response = await fetch('http://localhost:3001/term/' + term!._id, {
+      let response = await fetch('/api/term/' + term!._id, {
         method: 'DELETE'
       });
       let resp = await response.json();
@@ -95,13 +95,13 @@ export function TermManager() {
     (async () => {
       let response;
       if (!edit) {
-        response = await fetch('http://localhost:3001/term/', {
+        response = await fetch('/api/term/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json; charset=utf-8' },
           body: JSON.stringify(term!),
         });
       } else {
-        response = await fetch('http://localhost:3001/term/' + term!._id, {
+        response = await fetch('/api/term/' + term!._id, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json; charset=utf-8' },
           body: JSON.stringify(term!),

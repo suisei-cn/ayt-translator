@@ -62,12 +62,6 @@ const port = 3001;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use((_req, res, next) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length');
-  next();
-})
 
 function wrapAsync(f: (req: Request, res: Response) => Promise<void>) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -75,11 +69,11 @@ function wrapAsync(f: (req: Request, res: Response) => Promise<void>) {
   };
 }
 
-app.get('/terms', wrapAsync(async (_req, res) => {
+app.get('/api/terms', wrapAsync(async (_req, res) => {
   res.json(await db.find({}));
 }));
 
-app.get('/term/:id', wrapAsync(async (req, res) => {
+app.get('/api/term/:id', wrapAsync(async (req, res) => {
   let result = await db.find<ITerm>({ _id: req.params.id });
   if (result.length === 0) {
     throw new RangeError('Term ID does not exist');
@@ -87,7 +81,7 @@ app.get('/term/:id', wrapAsync(async (req, res) => {
   res.json(result[0]);
 }));
 
-app.post('/term', wrapAsync(async (req, res) => {
+app.post('/api/term', wrapAsync(async (req, res) => {
   let term = req.body;
   validate(term);
   delete term._id;
@@ -97,7 +91,7 @@ app.post('/term', wrapAsync(async (req, res) => {
   loadTerms();
 }));
 
-app.put('/term/:id', wrapAsync(async (req, res) => {
+app.put('/api/term/:id', wrapAsync(async (req, res) => {
   let term = req.body;
   validate(term);
   delete term._id;
@@ -110,7 +104,7 @@ app.put('/term/:id', wrapAsync(async (req, res) => {
   loadTerms();
 }));
 
-app.delete('/term/:id', wrapAsync(async (req, res) => {
+app.delete('/api/term/:id', wrapAsync(async (req, res) => {
   let number = await db.remove({ _id: req.params.id }, {});
   if (number === 0) {
     throw new RangeError('Term ID does not exist');
@@ -120,7 +114,7 @@ app.delete('/term/:id', wrapAsync(async (req, res) => {
   loadTerms();
 }));
 
-app.post('/translate', wrapAsync(async (req, res) => {
+app.post('/api/translate', wrapAsync(async (req, res) => {
   let targetLang = req.query.to;
   if (targetLang != 'en' && targetLang != 'zh') {
     res.status(403);
@@ -141,7 +135,13 @@ app.post('/translate', wrapAsync(async (req, res) => {
   res.json({ translation: await dictTranslator.translate(body) });
 }));
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+// Serve static files
+app.use(express.static('build'));
+app.get('/', (req, res) => {
+  res.sendFile('build/index.html');
+});
+
+app.use('/api', (err: any, req: Request, res: Response, next: NextFunction) => {
   if (!(err instanceof Error)) {
     return next();
   }

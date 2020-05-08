@@ -15,7 +15,7 @@ export function Tester() {
 
   async function translate(target: string) {
     setTranslated('');
-    let resp = await fetch('http://localhost:3001/translate?to=' + target, {
+    let resp = await fetch('/api/translate?to=' + target, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
       body: JSON.stringify({ text: original }),
