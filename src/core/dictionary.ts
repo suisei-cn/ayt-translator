@@ -240,27 +240,35 @@ export class DictionaryTranslator implements Translator {
     return output;
   }
 
-  encode(transformed: (string | [Term<any>, any])[]): [string, [Term<any>, any][]] {
+  encode(transformed: (string | [Term<any>, any])[]): [string, [Term<any>, any][][]] {
     let builder = '';
     let termList = [];
+    let prevTerm = false;
     for (let item of transformed) {
       if (typeof item === 'string') {
         builder += item;
+        prevTerm = false;
       } else {
-        builder += encodeReplacementString(termList.length);
-        termList.push(item);
+        if (prevTerm) {
+          // Combine multiple terms into a single one, to avoid translator being confused by a long string.
+          termList[termList.length - 1].push(item);
+        } else {
+          builder += encodeReplacementString(termList.length);
+          termList.push([item]);
+          prevTerm = true;
+        }
       }
     }
     return [builder, termList];
   }
 
-  decode(encoded: string, termList: [Term<any>, any][]): (string | [Term<any>, any])[] {
+  decode(encoded: string, termList: [Term<any>, any][][]): (string | [Term<any>, any])[] {
     let decoded = [];
     let split = encoded.split(REPLACEMENT_MATCHER);
     for (let i = 0; i < split.length; i += 2) {
       if (split[i]) decoded.push(split[i]);
       if (i + 1 < split.length) {
-        decoded.push(termList[decodeReplacementString(split[i + 1])]);
+        decoded.push(...termList[decodeReplacementString(split[i + 1])]);
       }
     }
     return decoded;
