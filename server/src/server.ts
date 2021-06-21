@@ -39,7 +39,7 @@ async function loadTerms() {
   let terms: ITerm[] = await db.find({});
   terms.sort((x, y) => -comparePriority(x, y));
   allTerms = terms.map(x => new RegexTerm(new RegExp(x.input), x.output, x as any));
-  allTerms.splice(0, 0, new UrlTerm(), new HashtagTerm());
+  allTerms.splice(0, 0, new UrlTerm(), new HashtagTerm(), new EmojiTerm());
 }
 
 loadTerms();
