@@ -128,7 +128,7 @@ pub async fn handle_rejection(
         message = "UNHANDLED_REJECTION";
     }
 
-    println!("{:?}", err);
+    log::info!("{:?}", err);
 
     let json = warp::reply::json(&ErrorMessage {
         error: message.into(),
@@ -139,6 +139,8 @@ pub async fn handle_rejection(
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    pretty_env_logger::init();
+
     Lazy::force(&TRANSLATOR_EN);
     Lazy::force(&TRANSLATOR_ZH);
 
@@ -159,6 +161,5 @@ async fn main() -> anyhow::Result<()> {
         .or(warp::fs::dir("../web/build"));
 
     warp::serve(routes).run(CONFIG.listen).await;
-
     Ok(())
 }
