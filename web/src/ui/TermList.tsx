@@ -204,8 +204,6 @@ export const TermList: React.FunctionComponent<ITermListProps> = (props) => {
         minWidth: 70,
         maxWidth: 70,
         isResizable: true,
-        isSorted: sortFilter.sortKey === 'priority',
-        isSortedDescending: sortFilter.sortedDescending,
         onColumnClick,
         onRender: (item: ITerm) => item.priority || 0,
         ...isSorted('priority'),

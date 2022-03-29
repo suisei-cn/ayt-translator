@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Stack } from '@fluentui/react/lib/Stack';
 import { SelectionMode } from '@fluentui/react/lib/Utilities';
 import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
-import { Overlay } from 'office-ui-fabric-react/lib/Overlay';
+import { Overlay } from '@fluentui/react';
 
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
