@@ -18,3 +18,9 @@ fancy-regex = "0.6"
 async-trait = "0.1.50"
 arcstr = "1.1"
 reqwest = { version = "0.11", features = ["json"] }
+rand = { version = "0.8", optional = true }
+md5 = { version = "0.7", optional = true }
+
+[features]
+google = []
+baidu = ["rand", "md5"]

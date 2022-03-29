@@ -4,6 +4,11 @@ mod google;
 pub use dictionary::DictionaryTranslator;
 pub use google::GoogleTranslator;
 
+#[cfg(feature = "baidu")]
+mod baidu;
+#[cfg(feature = "baidu")]
+pub use baidu::BaiduTranslator;
+
 use async_trait::async_trait;
 
 #[async_trait]
