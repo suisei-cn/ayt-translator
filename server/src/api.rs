@@ -136,7 +136,7 @@ async fn handle_api_post_translate(
     eligible_terms.sort_unstable_by(RegexTerm::compare_priority);
 
     let dict_translator =
-        crate::translator::DictionaryTranslator::new(Box::new(translator), eligible_terms);
+        crate::translator::DictionaryTranslator::new(&translator, &eligible_terms);
     let translation = dict_translator.translate(&body.text).await?;
     Ok(serde_json::to_vec(&TranslateResponse { translation })?)
 }

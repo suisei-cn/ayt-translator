@@ -78,7 +78,7 @@ impl Term for HashtagTerm {
             None => return Ok(None),
             Some(v) => v,
         };
-        let dict_translator = DictionaryTranslator::new(Box::new(NopTranslator), ctx.terms.clone());
+        let dict_translator = DictionaryTranslator::new(&NopTranslator, ctx.terms);
         let translation = dict_translator.translate(&result[1]).await?;
         Ok(Some((
             result.get(0).unwrap().range(),
@@ -103,9 +103,9 @@ impl Term for EmojiTerm {
     }
 }
 
-pub struct DictionaryTranslator {
-    translator: Box<dyn Translator>,
-    terms: Vec<RegexTerm>,
+pub struct DictionaryTranslator<'a> {
+    translator: &'a dyn Translator,
+    terms: &'a [RegexTerm],
 }
 
 #[derive(Debug, Clone)]
@@ -118,7 +118,7 @@ const USABLE_CHAR: &'static str = "BCDFGHJKLMNPQRSTVWXY";
 static REPLACEMENT_MATCHER: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"(?i)(ZM[BCDFGHJKLMNPQRSTVWXY]+Z)").unwrap());
 
-impl DictionaryTranslator {
+impl DictionaryTranslator<'_> {
     fn encode_replacement_string(mut index: usize) -> String {
         let mut builder = String::with_capacity(4);
         builder.push_str("ZM");
@@ -141,10 +141,6 @@ impl DictionaryTranslator {
         index
     }
 
-    pub fn new(translator: Box<dyn Translator>, terms: Vec<RegexTerm>) -> Self {
-        Self { translator, terms }
-    }
-
     async fn transform<T: Term>(
         &self,
         text: Vec<Part>,
@@ -152,7 +148,7 @@ impl DictionaryTranslator {
         filter: impl Fn(&T) -> Option<TermType> + Send + Sync,
     ) -> anyhow::Result<Vec<Part>> {
         fn helper<'a, T: Term>(
-            ctx: &'a DictionaryTranslator,
+            ctx: &'a DictionaryTranslator<'a>,
             mut text: Substr,
             mut terms: &'a [T],
             out: &'a mut Vec<Part>,
@@ -315,8 +311,14 @@ impl DictionaryTranslator {
     }
 }
 
+impl<'a> DictionaryTranslator<'a> {
+    pub fn new(translator: &'a dyn Translator, terms: &'a [RegexTerm]) -> Self {
+        Self { translator, terms }
+    }
+}
+
 #[async_trait]
-impl Translator for DictionaryTranslator {
+impl Translator for DictionaryTranslator<'_> {
     fn name(&self) -> &'static str {
         "Term"
     }
