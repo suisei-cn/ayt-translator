@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 
 use fancy_regex::Regex;
-use serde::{Serialize, Deserialize, Serializer, Deserializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
@@ -36,11 +36,17 @@ fn is_default<T: Default + Eq>(value: &T) -> bool {
 mod serde_regex {
     use super::*;
 
-    pub fn serialize<S>(regex: &Regex, ser: S) -> Result<S::Ok, S::Error> where S: Serializer {
+    pub fn serialize<S>(regex: &Regex, ser: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
         regex.as_str().serialize(ser)
     }
 
-    pub fn deserialize<'de, D>(der: D) -> Result<Regex, D::Error> where D: Deserializer<'de> {
+    pub fn deserialize<'de, D>(der: D) -> Result<Regex, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
         let str = String::deserialize(der)?;
         Regex::new(&str).map_err(serde::de::Error::custom)
     }
@@ -52,7 +58,7 @@ pub struct RegexTerm {
     pub input: Regex,
     pub output: String,
     /// Language code specifying the target language.
-    /// 
+    ///
     /// `None` matches all languages, useful for preprocessing.
     #[serde(rename = "targetLang", skip_serializing_if = "Option::is_none")]
     pub target_lang: Option<String>,

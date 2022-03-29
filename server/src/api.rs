@@ -1,4 +1,5 @@
 use crate::db::Database;
+use crate::translator::Translator;
 use crate::RegexTerm;
 use serde::Serializer;
 use serde::{Deserialize, Serialize};
@@ -106,14 +107,11 @@ async fn handle_api_post_translate(
     body: TranslateBody,
 ) -> anyhow::Result<Vec<u8>> {
     // Verify that the target language is supported.
-    match query.target_lang.as_str() {
-        "en" | "zh" => (),
+    let translator = match query.target_lang.as_str() {
+        "en" => &**crate::TRANSLATOR_EN,
+        "zh" => &**crate::TRANSLATOR_ZH,
         _ => anyhow::bail!("Invalid query"),
-    }
-
-    use crate::translator::Translator;
-
-    let translator = crate::translator::GoogleTranslator::new(query.target_lang.clone());
+    };
 
     // Filtering out terms that shouldn't be applied in the specified context.
     let mut eligible_terms: Vec<_> = db
@@ -135,8 +133,7 @@ async fn handle_api_post_translate(
         .collect();
     eligible_terms.sort_unstable_by(RegexTerm::compare_priority);
 
-    let dict_translator =
-        crate::translator::DictionaryTranslator::new(&translator, &eligible_terms);
+    let dict_translator = crate::translator::DictionaryTranslator::new(translator, &eligible_terms);
     let translation = dict_translator.translate(&body.text).await?;
     Ok(serde_json::to_vec(&TranslateResponse { translation })?)
 }

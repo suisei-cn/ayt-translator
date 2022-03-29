@@ -1,0 +1,55 @@
+use std::path::PathBuf;
+
+use serde::Deserialize;
+
+#[cfg(feature = "baidu")]
+#[derive(Deserialize)]
+pub struct BaiduConfig {
+    pub appid: String,
+    pub secret: String,
+}
+
+#[cfg(feature = "microsoft")]
+#[derive(Deserialize)]
+
+pub struct MicrosoftConfig {
+    pub api_key: String,
+}
+
+#[derive(Deserialize, Clone, Copy)]
+#[serde(rename_all = "kebab-case")]
+pub enum Translator {
+    Nop,
+    #[cfg(feature = "google")]
+    Google,
+    #[cfg(feature = "baidu")]
+    Baidu,
+    #[cfg(feature = "microsoft")]
+    Microsoft,
+}
+
+impl Default for Translator {
+    fn default() -> Self {
+        Translator::Nop
+    }
+}
+
+fn default_database_path() -> PathBuf {
+    PathBuf::from("dictionary.db")
+}
+
+#[derive(Deserialize)]
+pub struct Config {
+    #[cfg(feature = "baidu")]
+    pub baidu: Option<BaiduConfig>,
+    #[cfg(feature = "microsoft")]
+    pub microsoft: Option<MicrosoftConfig>,
+
+    #[serde(default)]
+    pub zh: Translator,
+    #[serde(default)]
+    pub en: Translator,
+
+    #[serde(default = "default_database_path")]
+    pub database: PathBuf,
+}

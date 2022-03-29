@@ -1,5 +1,5 @@
-use async_trait::async_trait;
 use super::Translator;
+use async_trait::async_trait;
 
 pub struct GoogleTranslator {
     target_lang: String,

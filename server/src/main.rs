@@ -1,15 +1,89 @@
-use serde::{ser::SerializeSeq, Serializer};
+use anyhow::Context;
+use once_cell::sync::Lazy;
 use std::net::SocketAddr;
 use std::sync::Arc;
+use translator::Translator;
 use warp::Filter;
 
 mod api;
+mod config;
 mod db;
 mod regex;
 mod schema;
 mod translator;
 
 use schema::RegexTerm;
+
+static CONFIG: Lazy<config::Config> = Lazy::new(|| {
+    fn load_config() -> anyhow::Result<config::Config> {
+        Ok(toml::from_slice(
+            &std::fs::read("config.toml").with_context(|| "Cannot load config.toml")?,
+        )
+        .with_context(|| "Cannot parse config.toml")?)
+    }
+
+    match load_config() {
+        Ok(v) => v,
+        Err(err) => {
+            eprintln!("{:?}", err);
+            std::process::exit(1);
+        }
+    }
+});
+
+fn load_translator(
+    target_lang: &str,
+    translator: config::Translator,
+) -> anyhow::Result<Box<dyn Translator>> {
+    Ok(match translator {
+        config::Translator::Nop => Box::new(translator::NopTranslator),
+        #[cfg(feature = "google")]
+        config::Translator::Google => {
+            Box::new(translator::GoogleTranslator::new(target_lang.to_owned()))
+        }
+        #[cfg(feature = "baidu")]
+        config::Translator::Baidu => {
+            let config = CONFIG
+                .baidu
+                .as_ref()
+                .ok_or_else(|| anyhow::anyhow!("Baidu config not found"))?;
+            Box::new(translator::BaiduTranslator::new(
+                config.appid.clone(),
+                config.secret.clone(),
+                target_lang.to_owned(),
+            ))
+        }
+        #[cfg(feature = "microsoft")]
+        config::Translator::Microsoft => {
+            let config = CONFIG
+                .microsoft
+                .as_ref()
+                .ok_or_else(|| anyhow::anyhow!("Microsoft config not found"))?;
+            Box::new(translator::MicrosoftTranslator::new(
+                config.api_key.clone(),
+                target_lang.to_owned(),
+            ))
+        }
+    })
+}
+
+static TRANSLATOR_EN: Lazy<Box<dyn Translator>> =
+    Lazy::new(|| match load_translator("en", CONFIG.en) {
+        Ok(v) => v,
+        Err(err) => {
+            eprintln!("{:?}", err);
+            std::process::exit(1);
+        }
+    });
+
+static TRANSLATOR_ZH: Lazy<Box<dyn Translator>> =
+    Lazy::new(|| match load_translator("zh", CONFIG.zh) {
+        Ok(v) => v,
+        Err(err) => {
+            eprintln!("{:?}", err);
+            std::process::exit(1);
+        }
+    });
 
 #[derive(Debug)]
 pub struct WarpError(pub anyhow::Error);
@@ -65,8 +139,11 @@ pub async fn handle_rejection(
 }
 
 #[tokio::main]
-async fn main() {
-    let db = Arc::new(db::Database::<String, RegexTerm>::open("dictionary.db").unwrap());
+async fn main() -> anyhow::Result<()> {
+    Lazy::force(&TRANSLATOR_EN);
+    Lazy::force(&TRANSLATOR_ZH);
+
+    let db = Arc::new(db::Database::<String, RegexTerm>::open(&CONFIG.database).unwrap());
 
     // Dispatch api with the rest served by static files.
     let routes = warp::path("api")
@@ -84,4 +161,6 @@ async fn main() {
 
     let addr: SocketAddr = "127.0.0.1:3001".parse().unwrap();
     warp::serve(routes).run(addr).await;
+
+    Ok(())
 }
