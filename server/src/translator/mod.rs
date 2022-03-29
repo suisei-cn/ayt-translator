@@ -16,6 +16,11 @@ mod microsoft;
 #[cfg(feature = "microsoft")]
 pub use microsoft::MicrosoftTranslator;
 
+#[cfg(feature = "deepl")]
+mod deepl;
+#[cfg(feature = "deepl")]
+pub use deepl::DeepLTranslator;
+
 use async_trait::async_trait;
 
 #[async_trait]

@@ -43,6 +43,8 @@
     "translator-placeholder": "Select Enabled Translator",
     "translator-google": "Google Translate",
     "translator-microsoft": "Microsoft Translator",
+    "translator-baidu": "Baidu Fanyi",
+    "translator-deepl": "DeepL Translator",
     "context-any": "Any",
     "context-include": "{{list}}",
     "context-except": "Any except {{list}}",

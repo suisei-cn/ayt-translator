@@ -32,7 +32,7 @@ const knownPersona: { [name: string]: IPersonaProps & { search: string } } = {};
 knownContexts.forEach(x => knownPersona[x.text] = x);
 
 const contextTags = Object.keys(knownPersona);
-const allTranslators = ['Google', 'Microsoft', 'Baidu'];
+const allTranslators = ['Google', 'Microsoft', 'Baidu', 'DeepL'];
 
 function resolveContextSuggestions(search: string) {
   let searchLower = search.toLowerCase();

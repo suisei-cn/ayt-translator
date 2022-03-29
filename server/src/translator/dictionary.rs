@@ -135,6 +135,7 @@ impl DictionaryTranslator<'_> {
     fn decode_replace_string(str: &str) -> usize {
         let mut index = 0;
         for c in str[2..str.len() - 1].chars() {
+            let c = c.to_ascii_uppercase();
             let digit = USABLE_CHAR.chars().position(|x| x == c).unwrap();
             index = index * USABLE_CHAR.len() + digit;
         }

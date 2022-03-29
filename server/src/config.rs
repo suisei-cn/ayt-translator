@@ -16,8 +16,14 @@ pub struct MicrosoftConfig {
     pub api_key: String,
 }
 
+#[cfg(feature = "deepl")]
+#[derive(Deserialize)]
+pub struct DeepLConfig {
+    pub auth_key: String,
+}
+
 #[derive(Deserialize, Clone, Copy)]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "lowercase")]
 pub enum Translator {
     Nop,
     #[cfg(feature = "google")]
@@ -26,6 +32,8 @@ pub enum Translator {
     Baidu,
     #[cfg(feature = "microsoft")]
     Microsoft,
+    #[cfg(feature = "deepl")]
+    DeepL,
 }
 
 impl Default for Translator {
@@ -48,6 +56,8 @@ pub struct Config {
     pub baidu: Option<BaiduConfig>,
     #[cfg(feature = "microsoft")]
     pub microsoft: Option<MicrosoftConfig>,
+    #[cfg(feature = "deepl")]
+    pub deepl: Option<DeepLConfig>,
 
     #[serde(default)]
     pub zh: Translator,

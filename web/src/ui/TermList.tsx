@@ -24,7 +24,7 @@ const classNames = mergeStyleSets({
     maxWidth: '16px',
   },
 });
-const allTranslators = ['Google', 'Microsoft', 'Baidu'];
+const allTranslators = ['Google', 'Microsoft', 'Baidu', 'DeepL'];
 
 function compareString(a: string, b: string) {
   return a === b ? 0 : (a < b ? -1 : 1);

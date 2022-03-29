@@ -63,6 +63,17 @@ fn load_translator(
                 target_lang.to_owned(),
             ))
         }
+        #[cfg(feature = "deepl")]
+        config::Translator::DeepL => {
+            let config = CONFIG
+                .deepl
+                .as_ref()
+                .ok_or_else(|| anyhow::anyhow!("DeepL config not found"))?;
+            Box::new(translator::DeepLTranslator::new(
+                config.auth_key.clone(),
+                target_lang.to_owned(),
+            ))
+        }
     })
 }
 

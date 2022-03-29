@@ -43,6 +43,8 @@
     "translator-placeholder": "请选择要启用的翻译器",
     "translator-google": "谷歌翻译",
     "translator-microsoft": "微软翻译",
+    "translator-baidu": "百度翻译",
+    "translator-deepl": "DeepL翻译",
     "context-any": "任意",
     "context-include": "{{list}}",
     "context-except": "除{{list}}",
