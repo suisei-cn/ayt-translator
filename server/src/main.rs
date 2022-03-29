@@ -1,6 +1,5 @@
 use anyhow::Context;
 use once_cell::sync::Lazy;
-use std::net::SocketAddr;
 use std::sync::Arc;
 use translator::Translator;
 use warp::Filter;
@@ -159,8 +158,7 @@ async fn main() -> anyhow::Result<()> {
         )
         .or(warp::fs::dir("../web/build"));
 
-    let addr: SocketAddr = "127.0.0.1:3001".parse().unwrap();
-    warp::serve(routes).run(addr).await;
+    warp::serve(routes).run(CONFIG.listen).await;
 
     Ok(())
 }

@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{net::SocketAddr, path::PathBuf};
 
 use serde::Deserialize;
 
@@ -38,6 +38,10 @@ fn default_database_path() -> PathBuf {
     PathBuf::from("dictionary.db")
 }
 
+fn default_listen_addr() -> SocketAddr {
+    "127.0.0.1:3001".parse().unwrap()
+}
+
 #[derive(Deserialize)]
 pub struct Config {
     #[cfg(feature = "baidu")]
@@ -52,4 +56,6 @@ pub struct Config {
 
     #[serde(default = "default_database_path")]
     pub database: PathBuf,
+    #[serde(default = "default_listen_addr")]
+    pub listen: SocketAddr,
 }
