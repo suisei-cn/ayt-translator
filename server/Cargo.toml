@@ -24,3 +24,5 @@ md5 = { version = "0.7", optional = true }
 [features]
 google = []
 baidu = ["rand", "md5"]
+microsoft = []
+default = ["google", "baidu", "microsoft"]

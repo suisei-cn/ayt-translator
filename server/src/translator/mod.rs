@@ -1,13 +1,20 @@
 mod dictionary;
-mod google;
-
 pub use dictionary::DictionaryTranslator;
+
+#[cfg(feature = "google")]
+mod google;
+#[cfg(feature = "google")]
 pub use google::GoogleTranslator;
 
 #[cfg(feature = "baidu")]
 mod baidu;
 #[cfg(feature = "baidu")]
 pub use baidu::BaiduTranslator;
+
+#[cfg(feature = "microsoft")]
+mod microsoft;
+#[cfg(feature = "microsoft")]
+pub use microsoft::MicrosoftTranslator;
 
 use async_trait::async_trait;
 
@@ -18,7 +25,7 @@ pub trait Translator: Send + Sync {
     async fn translate(&self, text: &str) -> anyhow::Result<String>;
 }
 
-struct NopTranslator;
+pub struct NopTranslator;
 
 #[async_trait]
 impl Translator for NopTranslator {
