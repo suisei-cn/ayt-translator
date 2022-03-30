@@ -339,7 +339,13 @@ impl Translator for DictionaryTranslator<'_> {
             .await?;
         let preprocessed = Self::inverse_transform(transformed, |ty| ty == TermType::Preprocess);
         let (encoded, list) = Self::encode(preprocessed);
+        if self.translator.name() != "Nop" {
+            log::info!("Translating: {}", encoded);
+        }
         let translated = self.translator.translate(&encoded).await?;
+        if self.translator.name() != "Nop" {
+            log::info!("Translated: {}", translated);
+        }
         let decoded = Self::decode(&translated, list);
         let postprocessed = self
             .transform(decoded, &self.terms, |x| {

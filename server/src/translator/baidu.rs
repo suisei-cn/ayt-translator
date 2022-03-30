@@ -64,6 +64,6 @@ impl Translator for BaiduTranslator {
             .into_iter()
             .map(|v| v.dst)
             .collect::<Vec<_>>()
-            .join(""))
+            .join("\n"))
     }
 }

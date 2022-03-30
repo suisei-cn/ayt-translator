@@ -52,7 +52,7 @@ impl Translator for DeepLTranslator {
             .await?;
 
         if body.translations.is_empty() {
-            return Err(anyhow::anyhow!("DeepL returns no translations"));
+            anyhow::bail!("DeepL returns no translations");
         }
 
         if body.translations.len() > 1 {
