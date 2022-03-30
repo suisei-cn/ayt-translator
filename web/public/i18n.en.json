@@ -50,6 +50,7 @@
     "context-except": "Any except {{list}}",
     "tab-editor": "Term Editor",
     "tab-test": "Translation Test",
+    "tester-lang": "Target Language",
     "translate": "Translate",
     "loading": "Loading"
 }

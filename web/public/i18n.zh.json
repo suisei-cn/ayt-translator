@@ -50,6 +50,7 @@
     "context-except": "除{{list}}",
     "tab-editor": "词条编辑",
     "tab-test": "翻译测试",
+    "tester-lang": "目标语言",
     "translate": "翻译",
     "loading": "加载中"
 }
