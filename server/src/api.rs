@@ -140,7 +140,7 @@ async fn handle_api_post_translate(
 
 pub fn api_get_terms(
     db: Arc<Database<String, RegexTerm>>,
-) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::path("terms")
         .and(warp::get())
         .and(warp::any().map(move || db.clone()))
@@ -153,7 +153,7 @@ pub fn api_get_terms(
 
 pub fn api_get_term(
     db: Arc<Database<String, RegexTerm>>,
-) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::path!("term" / String)
         .and(warp::get())
         .and(warp::any().map(move || db.clone()))
@@ -166,7 +166,7 @@ pub fn api_get_term(
 
 pub fn api_post_term(
     db: Arc<Database<String, RegexTerm>>,
-) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::path!("term")
         .and(warp::post())
         .and(warp::body::json())
@@ -180,7 +180,7 @@ pub fn api_post_term(
 
 pub fn api_put_term(
     db: Arc<Database<String, RegexTerm>>,
-) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::path!("term" / String)
         .and(warp::put())
         .and(warp::body::json())
@@ -194,7 +194,7 @@ pub fn api_put_term(
 
 pub fn api_delete_term(
     db: Arc<Database<String, RegexTerm>>,
-) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::path!("term" / String)
         .and(warp::delete())
         .and(warp::any().map(move || db.clone()))
@@ -207,7 +207,7 @@ pub fn api_delete_term(
 
 pub fn api_post_translate(
     db: Arc<Database<String, RegexTerm>>,
-) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::path!("translate")
         .and(warp::post())
         .and(warp::query())
