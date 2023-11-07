@@ -15,8 +15,8 @@ use schema::RegexTerm;
 
 static CONFIG: Lazy<config::Config> = Lazy::new(|| {
     fn load_config() -> anyhow::Result<config::Config> {
-        Ok(toml::from_slice(
-            &std::fs::read("config.toml").with_context(|| "Cannot load config.toml")?,
+        Ok(toml::from_str(
+            &std::fs::read_to_string("config.toml").with_context(|| "Cannot load config.toml")?,
         )
         .with_context(|| "Cannot parse config.toml")?)
     }
