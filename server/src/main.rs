@@ -169,7 +169,7 @@ async fn main() -> anyhow::Result<()> {
                 .map(|reply| warp::reply::with_header(reply, "content-type", "application/json"))
                 .recover(handle_rejection),
         )
-        .or(warp::fs::dir("../web/build"));
+        .or(warp::fs::dir("../web/dist"));
 
     warp::serve(routes).run(CONFIG.listen).await;
     Ok(())
